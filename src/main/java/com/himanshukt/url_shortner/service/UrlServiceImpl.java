@@ -55,4 +55,13 @@ public class UrlServiceImpl implements UrlService{
         }
         return shortcode.toString();
     }
+
+    @Override
+    public String getOriginalUrl(String shortCode){
+
+        UrlMapping urlMapping  = urlMappingRepository.findByshortCode(shortCode).orElseThrow(() ->
+                new RuntimeException("Short url not found"));
+
+        return urlMapping.getOriginalUrl();
+    }
 }

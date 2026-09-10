@@ -3,6 +3,7 @@ package com.himanshukt.url_shortner.service;
 import com.himanshukt.url_shortner.dto.CreateShortUrlRequest;
 import com.himanshukt.url_shortner.dto.CreateShortUrlResponse;
 import com.himanshukt.url_shortner.entity.UrlMapping;
+import com.himanshukt.url_shortner.exception.UrlNotFoundException;
 import com.himanshukt.url_shortner.repository.UrlMappingRepository;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +61,7 @@ public class UrlServiceImpl implements UrlService{
     public String getOriginalUrl(String shortCode){
 
         UrlMapping urlMapping  = urlMappingRepository.findByshortCode(shortCode).orElseThrow(() ->
-                new RuntimeException("Short url not found"));
+                new UrlNotFoundException("Short url not found"));
 
         return urlMapping.getOriginalUrl();
     }

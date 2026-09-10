@@ -10,6 +10,7 @@ public class UrlMapping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String originalUrl;
+    @Column(unique = true, nullable = false)
     private String shortCode;
 
 

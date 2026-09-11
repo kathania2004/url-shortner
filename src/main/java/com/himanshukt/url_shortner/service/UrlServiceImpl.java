@@ -7,6 +7,8 @@ import com.himanshukt.url_shortner.exception.UrlNotFoundException;
 import com.himanshukt.url_shortner.repository.UrlMappingRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 
 @Service
 public class UrlServiceImpl implements UrlService{
@@ -62,6 +64,15 @@ public class UrlServiceImpl implements UrlService{
 
         UrlMapping urlMapping  = urlMappingRepository.findByshortCode(shortCode).orElseThrow(() ->
                 new UrlNotFoundException("Short url not found"));
+
+        if(urlMapping.getExpiresAt() != null && urlMapping.getExpiresAt().isBefore(LocalDateTime.now())){
+            throw new UrlNotFoundException("short url has expired");
+        }
+
+        //increment click count
+        urlMapping.setClickCount(urlMapping.getClickCount() + 1);
+
+        urlMappingRepository.save(urlMapping);
 
         return urlMapping.getOriginalUrl();
     }
